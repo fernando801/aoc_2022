@@ -6,6 +6,7 @@ fn main() {
     let mut max: [u32; 3] = [0,0,0];
     let mut current: u32 = 0;
     let lines = read_lines("./in.txt").unwrap();
+    
     for line in lines {
         current = match line.parse::<u32>() {
             Ok(num) => num + current,

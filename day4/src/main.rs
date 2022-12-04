@@ -19,13 +19,12 @@ fn main() {
     let overlaped_assignments: usize = assignment_pairs
         .iter()
         .map(|(range1, range2)| {
-            if range1.0 <= range2.0 && range1.1 >= range2.1
-                || range2.0 <= range1.0 && range2.1 >= range1.1
+            if range1.0 > range2.1 || range2.0 > range1.1
             {
-                return 1;
+                return 0;
             }
 
-            0
+            1
         })
         .sum();
 

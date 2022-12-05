@@ -46,11 +46,16 @@ fn main() {
             .filter(|r| r.is_ok())
             .map(|r| r.unwrap())
             .collect();
-        
+
+        let mut buff: Vec<char> = Vec::new();
+
         for _ in 0..instruction_parts[0] {
             let value = stacks[instruction_parts[1] - 1].pop();
+            buff.push(value.unwrap());
+        }
 
-            stacks[instruction_parts[2] - 1].push(value.unwrap());
+        for _ in 0..instruction_parts[0] {
+            stacks[instruction_parts[2] - 1].push(buff.pop().unwrap());
         }
     });
 

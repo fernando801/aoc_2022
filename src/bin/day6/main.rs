@@ -17,7 +17,22 @@ fn part1() {
     println!("{}", &start);
 }
 
-fn part2() {}
+fn part2() {
+    let datastream = include_str!("input.txt");
+
+    let mut start = 0;
+
+    for i in 13..datastream.len() {
+        let set: HashSet<char> = datastream[i - 13..i + 1].chars().collect();
+
+        if set.len() == 14 {
+            start = i + 1;
+            break;
+        }
+    }
+
+    println!("{}", &start);
+}
 
 fn main() {
     println!("Part 1:");

@@ -78,7 +78,7 @@ fn part2() {
     let size_of_dir_to_free = loop {
         let min = dir_sizes.pop_min().unwrap();
 
-        if min.0 >= space_to_free{
+        if min.0 >= space_to_free {
             break min.0;
         }
     };

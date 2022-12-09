@@ -63,7 +63,75 @@ fn part1() {
     println!("{}", visible_trees);
 }
 
-fn part2() {}
+fn part2() {
+    let input = include_str!("input.txt");
+    let mut grid: Vec<Vec<(i32, i32)>> = Vec::new();
+
+    for line in input.lines() {
+        grid.push(Vec::new());
+        for c in line.chars() {
+            let height = c.to_digit(10).unwrap() as i32;
+            grid.last_mut().unwrap().push((height, 0));
+        }
+    }
+
+    let m = grid.len();
+    let n = grid.first().unwrap().len();
+
+    for row in 1..m - 1 {
+        for column in 1..n - 1 {
+            grid[row][column].1 = 1;
+            let mut viewing_distance = 0;
+
+            for i in (0..row).rev() {
+                viewing_distance += 1;
+                if grid[i][column].0 >= grid[row][column].0 || i == 0 {
+                    grid[row][column].1 *= viewing_distance;
+                    break;
+                }
+            }
+
+            let mut viewing_distance = 0;
+
+            for i in (row + 1)..m {
+                viewing_distance += 1;
+                if grid[i][column].0 >= grid[row][column].0 || i == m - 1 {
+                    grid[row][column].1 *= viewing_distance;
+                    break;
+                }
+            }
+
+            let mut viewing_distance = 0;
+
+            for j in (0..column).rev() {
+                viewing_distance += 1;
+                if grid[row][j].0 >= grid[row][column].0 || j == 0 {
+                    grid[row][column].1 *= viewing_distance;
+                    break;
+                }
+            }
+
+            let mut viewing_distance = 0;
+
+            for j in (column + 1)..n {
+                viewing_distance += 1;
+                if grid[row][j].0 >= grid[row][column].0 || j == n - 1 {
+                    grid[row][column].1 *= viewing_distance;
+                    break;
+                }
+            }
+        }
+    }
+
+    let highest_scenic_score = grid
+        .iter()
+        .flat_map(|r| r.iter())
+        .map(|&(_, score)| score)
+        .max()
+        .unwrap();
+
+    println!("{}", highest_scenic_score);
+}
 
 fn main() {
     println!("Part 1:");

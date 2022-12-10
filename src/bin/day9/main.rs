@@ -44,7 +44,45 @@ fn part1() {
     println!("{:?}", visited.len());
 }
 
-fn part2() {}
+fn part2() {
+    let input = include_str!("input.txt");
+
+    let mut rope = Vec::new();
+
+    for _ in 0..10 {
+        rope.push(Position::from(0, 0));
+    }
+
+    let mut visited = HashSet::from([(0, 0)]);
+
+    for instruction in input.lines() {
+        let (direction, amount) = instruction.split_once(" ").unwrap();
+
+        for _ in 0..amount.parse::<i32>().unwrap() {
+            match direction {
+                "U" => rope[0].y += 1,
+                "R" => rope[0].x += 1,
+                "D" => rope[0].y -= 1,
+                "L" => rope[0].x -= 1,
+                _ => (),
+            }
+
+            for i in 1..rope.len() {
+                let dx = rope[i - 1].x - rope[i].x;
+                let dy = rope[i - 1].y - rope[i].y;
+
+                if dx.abs() >= 2 || dy.abs() >= 2 {
+                    rope[i].x += if dx == 0 { 0 } else { dx / dx.abs() };
+                    rope[i].y += if dy == 0 { 0 } else { dy / dy.abs() };
+                }
+            }
+
+            visited.insert((rope.last().unwrap().x, rope.last().unwrap().y));
+        }
+    }
+
+    println!("{:?}", visited.len());
+}
 
 fn main() {
     println!("Part 1:");

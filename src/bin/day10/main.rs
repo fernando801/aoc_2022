@@ -1,7 +1,7 @@
 fn part1() {
     let input = include_str!("input.txt");
 
-    let mut cicle = 1;
+    let mut cycle = 1;
     let mut x = 1;
 
     let mut sum = 0;
@@ -9,17 +9,17 @@ fn part1() {
     for line in input.lines() {
         if let Some((_, amount)) = line.split_once(" ") {
             for _ in 0..2 {
-                if cicle <= 220 && (cicle + 20) % 40 == 0 {
-                    sum += x * cicle;
+                if cycle <= 220 && (cycle + 20) % 40 == 0 {
+                    sum += x * cycle;
                 }
-                cicle += 1;
+                cycle += 1;
             }
             x += amount.parse::<i32>().unwrap();
         } else {
-            if cicle <= 220 && (cicle + 20) % 40 == 0 {
-                sum += x * cicle;
+            if cycle <= 220 && (cycle + 20) % 40 == 0 {
+                sum += x * cycle;
             }
-            cicle += 1;
+            cycle += 1;
         }
     }
 
@@ -29,7 +29,7 @@ fn part1() {
 fn part2() {
     let input = include_str!("input.txt");
 
-    let mut cicle: i32 = 1;
+    let mut cycle: i32 = 1;
     let mut x: i32 = 1;
 
     let mut screen = [['.'; 40]; 6];
@@ -37,19 +37,19 @@ fn part2() {
     for line in input.lines() {
         if let Some((_, amount)) = line.split_once(" ") {
             for _ in 0..2 {
-                if ((cicle - 1) % 40 - x).abs() <= 1 {
-                    let c = cicle as usize;
+                if ((cycle - 1) % 40 - x).abs() <= 1 {
+                    let c = cycle as usize;
                     screen[(c - 1) / 40][(c - 1) % 40] = '#';
                 }
-                cicle += 1;
+                cycle += 1;
             }
             x += amount.parse::<i32>().unwrap();
         } else {
-            if ((cicle - 1) % 40 - x).abs() <= 1 {
-                let c = cicle as usize;
+            if ((cycle - 1) % 40 - x).abs() <= 1 {
+                let c = cycle as usize;
                 screen[(c - 1) / 40][(c - 1) % 40] = '#';
             }
-            cicle += 1;
+            cycle += 1;
         }
     }
 

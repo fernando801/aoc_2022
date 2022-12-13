@@ -104,7 +104,75 @@ fn part1() {
     println!("{}", shortest_path_length);
 }
 
-fn part2() {}
+fn part2() {
+    let input = include_str!("input.txt");
+
+    let m = input.lines().count();
+    let n = input.find("\n").unwrap();
+
+    let mut starts: Vec<(usize, usize)> = Vec::new();
+    let mut end = (0, 0);
+
+    let hmap: Vec<Vec<char>> = input
+        .lines()
+        .enumerate()
+        .map(|(i, line)| {
+            line.chars()
+                .enumerate()
+                .map(|(j, c)| match c {
+                    'S' | 'a' => {
+                        starts.push((i, j));
+                        'a'
+                    }
+                    'E' => {
+                        end = (i, j);
+                        'z'
+                    }
+                    l => l,
+                })
+                .collect()
+        })
+        .collect();
+
+    let mut adjacency_list: HashMap<(usize, usize), Vec<(usize, usize)>> = HashMap::new();
+
+    for i in 0..m {
+        for j in 0..n {
+            let current = (hmap[i][j] as u8 + 1) as char;
+            let mut neighbors: Vec<(usize, usize)> = Vec::new();
+
+            if i > 0 && hmap[i - 1][j] <= current {
+                neighbors.push((i - 1, j));
+            }
+
+            if i < m - 1 && hmap[i + 1][j] <= current {
+                neighbors.push((i + 1, j));
+            }
+
+            if j > 0 && hmap[i][j - 1] <= current {
+                neighbors.push((i, j - 1));
+            }
+
+            if j < n - 1 && hmap[i][j + 1] <= current {
+                neighbors.push((i, j + 1));
+            }
+
+            adjacency_list.insert((i, j), neighbors);
+        }
+    }
+
+    let mut path_lengths = Vec::new();
+
+    for &start in starts.iter() {
+        if let Some(path_length) = a_star(&adjacency_list, start, end) {
+            path_lengths.push(path_length)
+        }
+    }
+
+    let shortest_path_length = path_lengths.iter().min().unwrap();
+
+    println!("{}", shortest_path_length);
+}
 
 fn main() {
     println!("Part 1:");

@@ -113,7 +113,35 @@ fn part1() {
     println!("{}", ordered_indices_sum);
 }
 
-fn part2() {}
+fn part2() {
+    let input = include_str!("input.txt");
+
+    let mut packets: Vec<Packet> = input
+        .split("\n\n")
+        .flat_map(|pair_str| {
+            pair_str
+                .split("\n")
+                .map(|packet_str| str_to_packet(packet_str).unwrap())
+        })
+        .collect();
+
+    packets.push(str_to_packet("[[2]]").unwrap());
+    packets.push(str_to_packet("[[6]]").unwrap());
+
+    packets.sort_by(packet_cmp);
+
+    let divider_indices_product: usize = packets
+        .iter()
+        .enumerate()
+        .filter(|(_, packet)| {
+            packet_cmp(packet, &str_to_packet("[[2]]").unwrap()) == Ordering::Equal
+                || packet_cmp(packet, &str_to_packet("[[6]]").unwrap()) == Ordering::Equal
+        })
+        .map(|(i, _)| i + 1)
+        .product();
+
+    println!("{}", divider_indices_product);
+}
 
 fn main() {
     println!("Part 1:");

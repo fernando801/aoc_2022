@@ -75,15 +75,15 @@ impl Grove {
         }
     }
 
-    // fn do_rounds_with_movement(&mut self) -> usize {
-    //     let mut round = 1;
-    //     loop {
-    //         if !self.round() {
-    //             return round;
-    //         }
-    //         round += 1;
-    //     }
-    // }
+    fn do_rounds_with_movement(&mut self) -> usize {
+        let mut round = 1;
+        loop {
+            if !self.round() {
+                return round;
+            }
+            round += 1;
+        }
+    }
 
     fn get_empty_ground_count(&self) -> i32 {
         let mut row_lims = (i32::MAX, i32::MIN);
@@ -121,10 +121,33 @@ fn part1() {
     grove.do_rounds(10);
     let a = grove.get_empty_ground_count();
 
-    println!("{:#?}", a);
+    println!("{}", a);
 }
 
-fn part2() {}
+fn part2() {
+    let input = include_str!("input.txt");
+
+    let mut elves: HashSet<(i32, i32)> = HashSet::new();
+
+    for (row, line) in input.lines().enumerate().map(|(i, l)| (i as i32, l)) {
+        for (col, c) in line.char_indices().map(|(i, c)| (i as i32, c)) {
+            if c == '#' {
+                elves.insert((row, col));
+            }
+        }
+    }
+
+    let mut grove = Grove {
+        directions: VecDeque::from([(-1, 0), (1, 0), (0, -1), (0, 1)]),
+        next_loc: HashMap::new(),
+        canceled: HashSet::new(),
+        elves,
+    };
+
+    let a = grove.do_rounds_with_movement();
+
+    println!("{}", a);
+}
 
 fn main() {
     println!("Part 1:");
